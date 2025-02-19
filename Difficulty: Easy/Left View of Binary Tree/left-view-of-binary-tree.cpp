@@ -28,21 +28,32 @@ struct Node
 
 class Solution {
   public:
-    void leftViewUtil(vector<int> &v,Node *root,int level,int *maxLevel){
-       if(root==NULL)return ;
-       if(*maxLevel<level){
-           v.push_back(root->data);
-           *maxLevel=level;
-       }
-       leftViewUtil(v,root->left,level+1,maxLevel);
-       leftViewUtil(v,root->right,level+1,maxLevel);
-   }
     vector<int> leftView(Node *root) {
         // code here
         vector<int> v;
-        int maxLevel=0;
-        leftViewUtil(v,root,1,&maxLevel);
-        return v;
+       if(root==NULL)return v;
+       queue<Node *>q;
+       q.push(root);
+       while(!q.empty()){
+           int size=q.size();
+           for(int i=0;i<size;i++){
+               Node* curr=q.front();
+               q.pop();
+               if(i==0){
+                   v.push_back(curr->data);
+                   
+               }
+               if(curr->left){
+                   q.push(curr->left);
+                   
+               }
+               if(curr->right){
+                   q.push(curr->right);
+                   
+               }
+           }
+       }
+       return v;
     }
 };
 
