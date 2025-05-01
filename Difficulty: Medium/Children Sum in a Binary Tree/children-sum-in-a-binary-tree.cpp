@@ -86,6 +86,7 @@ Node* buildTree(string str) {
 
 
 // } Driver Code Ends
+
 /*Complete the function below
 
 struct Node
@@ -93,7 +94,7 @@ struct Node
     int data;
     struct Node* left;
     struct Node* right;
-    
+
     Node(int x){80
         data = x;
         left = right = NULL;
@@ -101,23 +102,29 @@ struct Node
 };
 */
 
-class Solution{
-    public:
-    //Function to check whether all nodes of a tree have the value 
-    //equal to the sum of their child nodes.
-    int isSumProperty(Node *root)
-    {
-     // Add your code here
-        if(root==NULL) return 1;
-        if(root->left==NULL && root->right==NULL) return 1;
+class Solution {
+  public:
+  
+    bool isSum(Node* node){
+        if(node==NULL)return true;
+        if(node->left==NULL && node->right==NULL)return true;
         int sum=0;
-        if(root->left)sum+=root->left->data;
-        if(root->right)sum+=root->right->data;
+        if(node->left)sum+=node->left->data;
+        if(node->right)sum+=node->right->data;
+        return (node->data==sum) && isSum(node->left) && isSum(node->right);
         
-        return (root->data==sum && isSumProperty(root->left) && isSumProperty(root->right));                        
+    }
+    // Function to check whether all nodes of a tree have the value
+    // equal to the sum of their child nodes.
+    int isSumProperty(Node *root) {
+        // Add your code here
+        bool ans=isSum(root);
+        if(ans)return 1;
+        else return 0;
         
     }
 };
+
 
 //{ Driver Code Starts.
 
