@@ -7,29 +7,22 @@ using namespace std;
 
 class Solution {
   public:
-    void dfsRec(vector<vector<int>>& adj,bool visited[],vector<int>& V,int s){
+    void dfsRec(vector<vector<int>>& adj,vector<bool> &visited,vector<int> &V,int s){
         for(int v:adj[s]){
             if(visited[v]==false){
                 visited[v]=true;
                 V.push_back(v);
                 dfsRec(adj,visited,V,v);
-                  
             }
         }
     }
     
-   
-    
     vector<int> dfs(vector<vector<int>>& adj) {
         vector<int> V;
         int n=adj.size();
-        bool visited[n];
-        
-        for(int i=0;i<n;i++){
-            visited[i]=false;
-        }
-        V.push_back(0);
+        vector<bool> visited(n,false);
         visited[0]=true;
+        V.push_back(0);
         dfsRec(adj,visited,V,0);
         return V;
     }
