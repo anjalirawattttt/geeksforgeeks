@@ -8,39 +8,25 @@ using namespace std;
 class Solution {
   public:
     vector<int> bfs(vector<vector<int>> &adj) {
-        
-        // Code here
+        vector<int> V;
         int n=adj.size();
-        
-        bool visited[n];
-        vector<int> res;
-        
-        for(int i=0;i<n;i++){
-            visited[i]=false;
-        } 
-        
+        vector<bool> visited(n,false);
         queue<int> q;
         q.push(0);
         visited[0]=true;
-        res.push_back(0);
+        V.push_back(0);
         while(!q.empty()){
-            int u=q.front();
-            q.pop();
-            for( int v : adj[u] ) {
-                if(visited[v]==false){
-                    visited[v]=true;
+           int u=q.front();
+           q.pop();
+           for(int v:adj[u]){
+               if(visited[v]==false){
                     q.push(v);
-                    res.push_back(v);
-                }
-            }
-            
+                    visited[v]=true;
+                    V.push_back(v);
+               }
+           }
         }
-        
-        
-        
-        
-        return res;
-        
+        return V;
     }
 };
 
