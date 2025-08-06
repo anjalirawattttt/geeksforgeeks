@@ -12,17 +12,10 @@ void help(Node* root, int input,int &ceil){
     }
     
     if(root->data<input){
-        if(!root->right){
-            return;
-        }
         help(root->right,input,ceil);    
     }
     
     if(root->data>input){
-        if(!root->left){
-            ceil=root->data; 
-            return;
-        }
         ceil=root->data;
         help(root->left,input,ceil);     
     }
