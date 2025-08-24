@@ -1,52 +1,41 @@
 class Solution {
   public:
-    vector<int> parent;
-
-    // DSU find with path compression
-    int find(int x) {
-        if (parent[x] == x) return x;
-        return parent[x] = find(parent[x]);
+    static bool myCmp(pair<int,int> a , pair<int,int> b){
+        return a.first>b.first;   
     }
-
-    // DSU merge to mark a slot as used
-    void merge(int u, int v) {
-        parent[u] = v;
-    }
-    
     
     vector<int> jobSequencing(vector<int> &deadline, vector<int> &profit) {
-        vector<int> v(2,0);
         int n=deadline.size();
-        if(n==0)return v;
-        //combine deadline and profit
-        vector<pair<int,int>> jobs(n);
+        int maxD=0;
+        vector<pair<int,int>> v;
         for(int i=0;i<n;i++){
-            jobs[i].first=profit[i];
-            jobs[i].second=deadline[i];
+            v.push_back({profit[i],deadline[i]});
+            maxD=max(maxD,deadline[i]);
         }
-        //sort profit in decreasing order
-        sort(jobs.begin(),jobs.end(),[](pair<int,int> a,pair<int,int> b){
-            return a.first>b.first;
-        });
-        //find max deadline
-        int maxx=deadline[0];
-        for(int &d:deadline){
-            maxx=max(maxx,d);
-        }
+        sort(v.begin(),v.end(),myCmp);
         
-        parent.resize(maxx+1);
-        for (int i = 0; i <= maxx; i++) parent[i] = i;
-        
-        for (auto &job : jobs) {
-            int p=job.first,d=job.second;
-            int slot = find(d);
-            if (slot > 0) {
-                merge(slot, slot - 1);
-                v[0]++;
-                v[1] += p;
+        vector<int> used(maxD+1,-1);
+        int p=0,count=0;
+        for(int i=0;i<n;i++){
+            if(used[v[i].second]==-1){
+                used[v[i].second]=1;
+                p+=v[i].first;
+                count++;
+            }   
+            else{
+                int l=v[i].second-1;
+                while(l>=1 && used[l]!=-1){
+                    l--;    
+                }
+                if(l==0)continue;
+                used[l]=1;
+                p+=v[i].first;
+                count++;
             }
         }
         
-        return v;
+        return {count,p};
+        
+        
     }
 };
