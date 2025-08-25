@@ -3,15 +3,18 @@
 class Solution {
   public:
     vector<int> minPartition(int N) {
-        vector<int> v;
+        // code here
+        vector<int> ans;
+        int amount=N;
         vector<int> c={2000,500,200,100,50,20,10,5,2,1};
         for(int i=0;i<c.size();i++){
-            if(N==0)break;
-            while(N>=c[i]){
-                v.push_back(c[i]);
-                N-=c[i];
+            while(amount>=c[i]){
+                ans.push_back(c[i]);
+                amount-=c[i];
             }
+            if(amount==0)break;
         }
-        return v;
+        
+        return ans;
     }
 };
