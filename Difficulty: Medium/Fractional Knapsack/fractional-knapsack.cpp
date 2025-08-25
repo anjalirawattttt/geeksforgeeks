@@ -8,29 +8,29 @@ struct Item{
 
 class Solution {
   public:
+    static bool myCmp(pair<double,int> &a,pair<double,int> &b){
+        return (a.first/a.second)>(b.first/b.second);
+    }
     double fractionalKnapsack(vector<int>& val, vector<int>& wt, int capacity) {
         double ans=0;
         int n=val.size();
-        
-        vector<pair<double,int>> v(n);
+        vector<pair<double,int>> v;
         for(int i=0;i<n;i++){
-            v[i].first=(double)val[i]/wt[i];
-            v[i].second=i;
+            v.push_back({(double)val[i],wt[i]});
         }
         
-        sort(v.begin(), v.end(), [](pair<double, int> a, pair<double, int> b) {
-            return a.first > b.first;  // Decreasing order by first element
-        });
-        
-        for(int i=0;i<n;i++){
-            if(wt[v[i].second]<=capacity){
-                capacity-=wt[v[i].second];
-                ans+=val[v[i].second];
-            }
+        sort(v.begin(),v.end(),myCmp);
+        int i=0;
+        while(capacity!=0 && i<n){
+            if(v[i].second<=capacity){
+                ans+=v[i].first;
+                capacity-=v[i].second;
+            }   
             else{
-                ans+=v[i].first*capacity; 
-                break;
+                ans+= (v[i].first/v[i].second)*capacity ;
+                capacity=0;    
             }
+            i++;
         }
         ans = round(ans * 1e6) / 1e6;
         return ans;
